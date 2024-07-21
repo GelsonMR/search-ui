@@ -1,13 +1,14 @@
 import '@testing-library/react';
 import { App } from '.';
 import { fireEvent, render, screen } from './utils/test';
-import { api } from './api';
+import * as services from '../app/services';
+import userEvent from '@testing-library/user-event';
 
-jest.mock('./api');
+const mockGetData = jest.spyOn(services, 'getSearchResults');
 
 describe('App component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    mockGetData.mockReset();
   });
 
   test('renders application form, search field and button named "Search"', () => {
@@ -24,21 +25,20 @@ describe('App component', () => {
   });
 
   test('triggers search on button click and displays results', async () => {
-    jest
-      .spyOn(api, 'get')
-      .mockImplementation(
-        jest.fn(() =>
-          Promise.resolve({ data: [{ id: 1, title: 'Money Tips' }] })
-        )
-      );
     render(<App />);
 
     const searchFieldElement = screen.getByRole('textbox');
-    fireEvent.input(searchFieldElement, {
-      target: {
-        value: 'money',
+    userEvent.type(searchFieldElement, 'money');
+
+    mockGetData.mockResolvedValue([
+      {
+        id: '1',
+        title: 'Money Tips',
+        url: '',
+        description: '',
+        category: 'BLOG_POSTS',
       },
-    });
+    ]);
 
     const buttonElement = screen.getByRole('button', { name: /search/i });
     fireEvent.click(buttonElement);
@@ -47,9 +47,26 @@ describe('App component', () => {
     expect(resultTitle).toBeInTheDocument();
   });
 
-  test.todo(
-    'triggers search on enter press while focused on input field and displays results'
-  );
+  test.skip('triggers search on enter press while focused on input field and displays results', async () => {
+    render(<App />);
+
+    const searchFieldElement = screen.getByRole('textbox');
+
+    mockGetData.mockResolvedValue([
+      {
+        id: '1',
+        title: 'Money Tips',
+        url: '',
+        description: '',
+        category: 'BLOG_POSTS',
+      },
+    ]);
+
+    userEvent.type(searchFieldElement, 'money{enter}');
+
+    const resultTitle = await screen.findByText(/Money Tips/i);
+    expect(resultTitle).toBeInTheDocument();
+  });
 
   test.todo('renders loading state until search results are available');
 

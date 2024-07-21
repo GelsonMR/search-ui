@@ -4,10 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { getSearchResults } from '../../services';
 
 export function SearchPage() {
-  const [query, setQuery] = useState('money');
+  const [query, setQuery] = useState('');
   const { data } = useQuery({
     queryKey: ['search', query],
-    queryFn: () => (query ? getSearchResults(query) : []),
+    queryFn: () => getSearchResults(query),
+    enabled: !!query,
   });
 
   const handleSubmit = (e: FormEvent<SearchForm>) => {
