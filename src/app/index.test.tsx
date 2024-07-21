@@ -1,6 +1,6 @@
 import '@testing-library/react';
 import { App } from '.';
-import { fireEvent, render, screen } from './utils/test';
+import { act, fireEvent, render, screen, waitFor } from './utils/test';
 import * as services from '../app/services';
 import userEvent from '@testing-library/user-event';
 
@@ -27,9 +27,6 @@ describe('App component', () => {
   test('triggers search on button click and displays results', async () => {
     render(<App />);
 
-    const searchFieldElement = screen.getByRole('textbox');
-    userEvent.type(searchFieldElement, 'money');
-
     mockGetData.mockResolvedValue([
       {
         id: '1',
@@ -39,6 +36,9 @@ describe('App component', () => {
         category: 'BLOG_POSTS',
       },
     ]);
+
+    const searchFieldElement = screen.getByRole('textbox');
+    userEvent.type(searchFieldElement, 'money');
 
     const buttonElement = screen.getByRole('button', { name: /search/i });
     fireEvent.click(buttonElement);
@@ -47,10 +47,8 @@ describe('App component', () => {
     expect(resultTitle).toBeInTheDocument();
   });
 
-  test.skip('triggers search on enter press while focused on input field and displays results', async () => {
+  test('triggers search on enter press while focused on input field and displays results', async () => {
     render(<App />);
-
-    const searchFieldElement = screen.getByRole('textbox');
 
     mockGetData.mockResolvedValue([
       {
@@ -62,13 +60,44 @@ describe('App component', () => {
       },
     ]);
 
-    userEvent.type(searchFieldElement, 'money{enter}');
+    const searchFieldElement = screen.getByRole('textbox');
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(async () => userEvent.type(searchFieldElement, 'money{enter}'));
 
     const resultTitle = await screen.findByText(/Money Tips/i);
     expect(resultTitle).toBeInTheDocument();
   });
 
-  test.todo('renders loading state until search results are available');
+  test('renders loading state until search results are available', async () => {
+    render(<App />);
+
+    mockGetData.mockImplementation(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      return [
+        {
+          id: '1',
+          title: 'Money Tips',
+          url: '',
+          description: '',
+          category: 'BLOG_POSTS',
+        },
+      ];
+    });
+
+    const searchFieldElement = screen.getByRole('textbox');
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(async () => userEvent.type(searchFieldElement, 'money{enter}'));
+
+    await waitFor(() => {
+      const loading = screen.getByText(/Loading/i);
+      return expect(loading).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const resultTitle = screen.getByText(/Money Tips/i);
+      return expect(resultTitle).toBeInTheDocument();
+    });
+  });
 
   test.todo('renders title and description of each search result');
 

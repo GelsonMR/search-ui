@@ -5,7 +5,7 @@ import { getSearchResults } from '../../services';
 
 export function SearchPage() {
   const [query, setQuery] = useState('');
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['search', query],
     queryFn: () => getSearchResults(query),
     enabled: !!query,
@@ -27,6 +27,7 @@ export function SearchPage() {
           <button type="submit">Search</button>
         </div>
       </form>
+      {isFetching && <div>Loading</div>}
       {data?.map(({ id, title }) => (
         <div key={id}>{title}</div>
       ))}
