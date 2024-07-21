@@ -1,19 +1,5 @@
-type SearchResult = {
-  id: string;
-  title: string;
-  url: string;
-  description: string;
-  category: 'VIDEOS' | 'PLAYLISTS' | 'BLOG_POSTS';
-};
+import { SearchPage } from './components/SearchPage';
 
-function App() {
-  return (
-    <div>
-      <header>
-        <h1>SearchLion</h1>
-      </header>
-    </div>
-  );
+export function App() {
+  return <SearchPage />;
 }
-
-export default App;

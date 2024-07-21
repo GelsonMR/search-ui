@@ -1,14 +1,20 @@
+import '@testing-library/react';
+import { App } from '.';
 import { render, screen } from '@testing-library/react';
-import App from '.';
 
 describe('App component', () => {
-  test('renders title', () => {
+  test('renders application form, search field and button named "Search"', () => {
     render(<App />);
-    const linkElement = screen.getByText(/SearchLion/i);
-    expect(linkElement).toBeInTheDocument();
-  });
 
-  test.todo('renders application form, search field and button named "Search"');
+    const formElement = screen.getByRole('form');
+    expect(formElement).toBeInTheDocument();
+
+    const searchFieldElement = screen.getByRole('textbox');
+    expect(searchFieldElement).toBeInTheDocument();
+
+    const buttonElement = screen.getByRole('button', { name: /search/i });
+    expect(buttonElement).toBeInTheDocument();
+  });
 
   test.todo('triggers search on button click and displays results');
 
