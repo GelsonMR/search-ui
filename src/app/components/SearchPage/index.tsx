@@ -24,12 +24,16 @@ export function SearchPage() {
       <form name="SearchForm" onSubmit={handleSubmit}>
         <div>
           <input name="query" type="text" placeholder="Search" />
-          <button type="submit">Search</button>
+          <button type="submit" disabled={isFetching}>
+            {isFetching ? 'Loading' : 'Search'}
+          </button>
         </div>
       </form>
-      {isFetching && <div>Loading</div>}
-      {data?.map(({ id, title }) => (
-        <div key={id}>{title}</div>
+      {data?.map(({ id, title, description }) => (
+        <div key={id}>
+          <div>{title}</div>
+          <div>{description}</div>
+        </div>
       ))}
     </div>
   );
