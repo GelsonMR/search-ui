@@ -29,11 +29,11 @@ export function SearchPage() {
           </button>
         </div>
       </form>
-      {data?.map(({ id, title, description }) => (
-        <div key={id}>
+      {data?.map(({ id, title, description, url }) => (
+        <a key={id} href={url} target="_blank" rel="noreferrer">
           <div>{title}</div>
           <div>{description}</div>
-        </div>
+        </a>
       ))}
     </div>
   );

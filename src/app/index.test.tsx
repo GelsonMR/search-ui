@@ -12,7 +12,7 @@ describe('App component', () => {
       {
         id: '1',
         title: 'Money Tips',
-        url: '5 tips for saving money',
+        url: 'https://letmegooglethat.com/?q=Money%20Tips',
         description: '5 tips for saving money',
         category: 'VIDEOS',
       },
@@ -96,7 +96,22 @@ describe('App component', () => {
     expect(resultDescription).toBeInTheDocument();
   });
 
-  test.todo('click on a search result opens it in a new tab');
+  test('renders search result as an anchor that opens in a new tab', async () => {
+    render(<App />);
+
+    const searchFieldElement = screen.getByRole('textbox');
+    userEvent.type(searchFieldElement, 'something');
+
+    const buttonElement = screen.getByRole('button', { name: /search/i });
+    fireEvent.click(buttonElement);
+
+    const link = await screen.findByRole('link', { name: /Money Tips/i });
+    expect(link).toHaveAttribute(
+      'href',
+      'https://letmegooglethat.com/?q=Money%20Tips'
+    );
+    expect(link).toHaveAttribute('target', '_blank');
+  });
 
   test.todo('renders user-friendly content type of each search result');
 
