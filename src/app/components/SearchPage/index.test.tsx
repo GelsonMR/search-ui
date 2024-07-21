@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
 import { SearchPage } from '.';
+import { render, screen } from '../../utils/test';
 
 describe('SearchPage component', () => {
   test('renders title', () => {
