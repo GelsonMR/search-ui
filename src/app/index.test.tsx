@@ -113,7 +113,18 @@ describe('App component', () => {
     expect(link).toHaveAttribute('target', '_blank');
   });
 
-  test.todo('renders user-friendly content type of each search result');
+  test('renders user-friendly content type of each search result', async () => {
+    render(<App />);
+
+    const searchFieldElement = screen.getByRole('textbox');
+    userEvent.type(searchFieldElement, 'something');
+
+    const buttonElement = screen.getByRole('button', { name: /search/i });
+    fireEvent.click(buttonElement);
+
+    const resultTitle = await screen.findByText(/\[Video\]/i);
+    expect(resultTitle).toBeInTheDocument();
+  });
 
   test.todo('renders empty state when no results are found');
 });

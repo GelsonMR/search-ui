@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { SearchForm } from './types';
 import { useQuery } from '@tanstack/react-query';
 import { getSearchResults } from '../../services';
+import { CategoryDisplay } from '../../types';
 
 export function SearchPage() {
   const [query, setQuery] = useState('');
@@ -29,9 +30,11 @@ export function SearchPage() {
           </button>
         </div>
       </form>
-      {data?.map(({ id, title, description, url }) => (
+      {data?.map(({ id, title, description, url, category }) => (
         <a key={id} href={url} target="_blank" rel="noreferrer">
-          <div>{title}</div>
+          <div>
+            [{CategoryDisplay[category]}] {title}
+          </div>
           <div>{description}</div>
         </a>
       ))}
