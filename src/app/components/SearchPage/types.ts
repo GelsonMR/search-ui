@@ -1,6 +1,6 @@
 interface FormElements extends HTMLFormControlsCollection {
   query: HTMLInputElement;
 }
-export interface SearchForm extends HTMLFormElement {
+export interface SearchFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
