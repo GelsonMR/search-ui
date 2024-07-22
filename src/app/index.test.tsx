@@ -127,7 +127,7 @@ describe('App component', () => {
     const buttonElement = screen.getByRole('button', { name: /search/i });
     fireEvent.click(buttonElement);
 
-    const resultTitle = await screen.findByText(/\[Video\]/i);
+    const resultTitle = await screen.findByText(/Video/i);
     expect(resultTitle).toBeInTheDocument();
   });
 

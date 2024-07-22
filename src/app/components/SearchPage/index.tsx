@@ -3,6 +3,17 @@ import { SearchForm } from './types';
 import { useQuery } from '@tanstack/react-query';
 import { getSearchResults } from '../../services';
 import { CategoryDisplay } from '../../types';
+import {
+  Button,
+  CategoryBadge,
+  Container,
+  Header,
+  Input,
+  Link,
+  ResultsContainer,
+  SearchContainer,
+  Title,
+} from './styled';
 
 export function SearchPage() {
   const [query, setQuery] = useState('');
@@ -18,29 +29,37 @@ export function SearchPage() {
   };
 
   return (
-    <div>
-      <header>
-        <h1>🦁 SearchLion</h1>
-      </header>
-      <form name="SearchForm" onSubmit={handleSubmit}>
-        <div>
-          <input name="query" type="text" placeholder="Search" />
-          <button type="submit" disabled={isFetching}>
-            {isFetching ? 'Loading' : 'Search'}
-          </button>
-        </div>
-      </form>
-      {!isFetching && data?.length === 0 && (
-        <div>No results found for "{query}"</div>
-      )}
-      {data?.map(({ id, title, description, url, category }) => (
-        <a key={id} href={url} target="_blank" rel="noreferrer">
-          <div>
-            [{CategoryDisplay[category]}] {title}
+    <Container>
+      <Header>
+        <Title>🦁 SearchLion</Title>
+        <form name="SearchForm" onSubmit={handleSubmit}>
+          <SearchContainer>
+            <Input
+              name="query"
+              type="text"
+              placeholder="Type your search"
+              autoFocus
+            />
+            <Button type="submit" disabled={isFetching}>
+              {isFetching ? 'Loading' : 'Search'}
+            </Button>
+          </SearchContainer>
+        </form>
+      </Header>
+      <ResultsContainer>
+        {!isFetching && data?.length === 0 && (
+          <div>No results found for "{query}"</div>
+        )}
+        {data?.map(({ id, title, description, url, category }) => (
+          <div key={id}>
+            <Link href={url} target="_blank" rel="noreferrer">
+              {title}
+            </Link>
+            <CategoryBadge>{CategoryDisplay[category]}</CategoryBadge>
+            <div>{description}</div>
           </div>
-          <div>{description}</div>
-        </a>
-      ))}
-    </div>
+        ))}
+      </ResultsContainer>
+    </Container>
   );
 }
