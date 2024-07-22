@@ -39,7 +39,8 @@
   "jest": {
     "coveragePathIgnorePatterns": [
       ".server.js",
-      "/src/index.tsx"
+      "/src/index.tsx",
+      "/src/reportWebVitals.ts"
     ],
     "moduleNameMapper": {
       "^axios$": "axios/dist/node/axios.cjs"

@@ -7,7 +7,7 @@ const buildProvidersTree = (componentsWithProps: Array<ProvidersType>) => {
   return componentsWithProps.reduce(
     (
       AccumulatedComponents: React.ElementType,
-      [Provider, props = {}]: ProvidersType
+      [Provider, props]: ProvidersType
     ) => {
       return ({ children }: PropsWithChildren) => {
         return (
