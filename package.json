@@ -40,7 +40,8 @@
   },
   "jest": {
     "coverageReporters": [
-      "json-summary"
+      "json-summary",
+      "text"
     ],
     "coveragePathIgnorePatterns": [
       ".server.js",
