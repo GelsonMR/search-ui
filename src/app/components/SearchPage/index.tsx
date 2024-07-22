@@ -30,6 +30,9 @@ export function SearchPage() {
           </button>
         </div>
       </form>
+      {!isFetching && data?.length === 0 && (
+        <div>No results found for "{query}"</div>
+      )}
       {data?.map(({ id, title, description, url, category }) => (
         <a key={id} href={url} target="_blank" rel="noreferrer">
           <div>

@@ -5,9 +5,10 @@ import * as services from '../app/services';
 import userEvent from '@testing-library/user-event';
 
 describe('App component', () => {
-  let mockGetData = jest.spyOn(services, 'getSearchResults');
+  let mockGetData: jest.SpyInstance;
 
   beforeEach(() => {
+    mockGetData = jest.spyOn(services, 'getSearchResults');
     mockGetData.mockResolvedValue([
       {
         id: '1',
@@ -17,6 +18,10 @@ describe('App component', () => {
         category: 'VIDEOS',
       },
     ]);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   test('renders application form, search field and button named "Search"', () => {
@@ -126,5 +131,23 @@ describe('App component', () => {
     expect(resultTitle).toBeInTheDocument();
   });
 
-  test.todo('renders empty state when no results are found');
+  test('renders empty state when no results are found', async () => {
+    mockGetData.mockResolvedValueOnce([]);
+
+    render(<App />);
+
+    const searchFieldElement = screen.getByRole('textbox');
+    userEvent.type(searchFieldElement, 'something');
+
+    const buttonElement = screen.getByRole('button', { name: /search/i });
+    fireEvent.click(buttonElement);
+
+    await waitFor(() => {
+      const resultTitle = screen.queryByText(/Money Tips/i);
+      expect(resultTitle).not.toBeInTheDocument();
+    });
+
+    const emptyState = screen.getByText(/No results found for "something"/i);
+    expect(emptyState).toBeInTheDocument();
+  });
 });
