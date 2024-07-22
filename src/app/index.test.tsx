@@ -1,7 +1,7 @@
 import '@testing-library/react';
 import { App } from '.';
 import { act, fireEvent, render, screen, waitFor } from './utils/test';
-import * as services from '../app/services';
+import * as services from './services';
 import userEvent from '@testing-library/user-event';
 
 describe('App component', () => {
