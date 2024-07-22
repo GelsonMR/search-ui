@@ -1,11 +1,11 @@
-# Search UI
-
 ![Branches Coverage Badge](_doc/badge-branches.svg 'Branches Coverage Badge')
 ![Functions Coverage Badge](_doc/badge-functions.svg 'Functions Coverage Badge')
 ![Lines Coverage Badge](_doc/badge-lines.svg 'Lines Coverage Badge')
 ![Statements Coverage Badge](_doc/badge-statements.svg 'Statements Coverage Badge')
 
-Welcome to the Search UI coding challenge. Feel free to check this small applicationd demonstrating my abilities in React and TypeScript.
+# Search UI
+
+Welcome to the Search UI coding challenge. Feel free to check this small application which demonstrates my abilities in React and TypeScript.
 
 ## Usage
 
